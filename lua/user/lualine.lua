@@ -1,4 +1,5 @@
 local status_ok, lualine = pcall(require, "lualine")
+local gps = require("nvim-gps")
 if not status_ok then
 	return
 end
@@ -62,28 +63,34 @@ local spaces = function()
 	return "spaces: " .. vim.api.nvim_buf_get_option(0, "shiftwidth")
 end
 
+local custom_gruvbox = require'lualine.themes.gruvbox'
+
+-- Change the background of lualine_c section for normal mode
+custom_gruvbox.normal.c.bg = '#112233'
+
 lualine.setup({
 	options = {
 		icons_enabled = true,
-		theme = "auto",
+		theme = "jellybeans",
 		component_separators = { left = "", right = "" },
 		section_separators = { left = "", right = "" },
 		disabled_filetypes = { "alpha", "dashboard", "NvimTree", "Outline" },
 		always_divide_middle = true,
 	},
 	sections = {
-		lualine_a = { branch, diagnostics },
-		lualine_b = { mode },
-		lualine_c = {},
-		-- lualine_x = { "encoding", "fileformat", "filetype" },
-		lualine_x = { diff, spaces, "encoding", filetype },
+		lualine_a = {
+      { 'mode', fmt = function(str) return str:sub(1,1) end },
+      diagnostics },
+		lualine_b = { { "filename", path = 1 }},
+    lualine_c = { { gps.get_location, cond = gps.is_available } },
+		lualine_x = { branch, diff },
 		lualine_y = { location },
 		lualine_z = { progress },
 	},
 	inactive_sections = {
 		lualine_a = {},
 		lualine_b = {},
-		lualine_c = { "filename" },
+		lualine_c = { { "filename", path = 1 }},
 		lualine_x = { "location" },
 		lualine_y = {},
 		lualine_z = {},
