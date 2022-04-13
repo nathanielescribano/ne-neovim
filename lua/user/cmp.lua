@@ -122,17 +122,14 @@ cmp.setup {
     behavior = cmp.ConfirmBehavior.Replace,
     select = false,
   },
-  -- below is what i had before, if i want it back, i can remove the line with 'native'
-  -- window = {
-  --   documentation = {
-  --     border = { "╭", "─", "╮", "│", "╯", "─", "╰", "│" },
-  --   }
-  -- },
   window = {
-    documentation = "native",
+    completion = cmp.config.window.bordered(),
+    documentation = cmp.config.window.bordered(),
+  },
+  view = {
+    entries = 'native',
   },
   experimental = {
     ghost_text = false,
-    native_menu = false,
   },
 }
